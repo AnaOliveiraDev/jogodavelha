@@ -18,11 +18,16 @@
 }
 .main p{
   font-size: 20px;
+  text-align: left;
 }
 .turno{
   text-align: center;
 }
 .tabuleiro{
+  display: flex;
+  flex-direction: column;
+}
+.linha{
   display: flex;
 }
 .coluna{
@@ -30,6 +35,24 @@
   height: 200px;
   background-color: #badfab;
   border: 3px solid #5cca47;
+  display: inline-flex;
+}
+.coluna button{
+  display: flex;
+	justify-content: center;
+	font-style: italic;
+	font-size: 8em;
+	color: #212121;
+	background-color: #badfab;
+	text-align: center;
+	padding: 0;
+  width: 195px;
+	height: 196px;
+	align-items: center;
+	box-sizing: unset;
+}
+.coluna button[value='2']{
+  color:#408433;
 }
 .sidebar {
   width: 300px;
