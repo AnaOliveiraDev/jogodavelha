@@ -24,20 +24,12 @@
   text-align: center;
 }
 .tabuleiro{
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 230px 230px 230px;
+  grid-template-rows:  230px 230px 230px;
 }
-.linha{
-  display: flex;
-}
-.coluna{
-  width: 200px;
-  height: 200px;
-  background-color: #badfab;
-  border: 3px solid #5cca47;
-  display: inline-flex;
-}
-.coluna button{
+
+.tabuleiro button{
   display: flex;
 	justify-content: center;
 	font-style: italic;
@@ -51,7 +43,7 @@
 	align-items: center;
 	box-sizing: unset;
 }
-.coluna button[value='2']{
+button[value='2']{
   color:#408433;
 }
 .sidebar {

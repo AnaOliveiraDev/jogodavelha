@@ -1,42 +1,72 @@
 import { stringify } from 'querystring';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
-
-  const getInitialState = () =>{
+  
+  const bucasEstadoInicial = () =>{
     const state = []
-    for(let casas = 1; casas < 10; casas ++){
+    for(let casas = 0; casas < 9; casas ++){
       state[casas] = 0;
     }
     return state;
   }
 
-  const [player, setPlayer] = useState(1);
-  const [value, setValue] = useState(getInitialState);
+  const [jogador, setJogador] = useState(1);
+  const [valor, setValor] = useState(bucasEstadoInicial);
+  const [vencedor, setVencedor] = useState<Number>(0);
 
-  const handleClick = (key: string) => {
-    setValue({
-      ...value,
-      [key]: player
-    });
-    setPlayer(player * -1)
+  const reiniciarPartida = () => {
+    setValor(bucasEstadoInicial());
+    setJogador(1)
   }
 
-  const marcaJogador = (player: number) => {
-    let marca = '';
-    if(player === 1){
-      marca = 'L';
+  const colunas = [0, 1 , 2, 3, 4, 5, 6, 7, 8];
+
+  const encontraVencedor = () => {
+    const combinacoes = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+
+      [0, 4, 8],
+      [2, 4, 6]
+    ]
+  }
+
+  const acaoClick = (key: number) => {
+    if(valor[key]){
+      return;
     }
-    if(player === -1){
-      marca = '2';
+    const valores = {
+      ...valor,
+      [key]: jogador
     }
-    if(player === 0){
-      marca = '';
+    setValor(valores);
+    setJogador(jogador * -1)
+    console.log(encontraVencedor());
+  }
+
+  const defineJogador = (jogador: number) => {
+    let define = '';
+    if(jogador === 1){
+      define= 'L';
     }
-    return marca;
+    if(jogador === -1){
+      define = '2';
+    }
+    if(jogador === 0){
+      define = '';
+    }
+    return define;
   };
   
+
+
   return (
     <div className="App">
       <div className="header">
@@ -47,60 +77,17 @@ function App() {
         <div className="content">
           <div className="turno">
               <h2>Turno</h2>
-              <p>Jogando agora: {player === 1 ? 'Humano' : 'Bot'}</p>
+              <p>Jogando agora: {jogador === 1 ? 'Humano' : 'Bot'}</p>
+              <p>Vencedor: </p>
           </div>
           <div className="tabuleiro">
-              <div className="linha">
-                  <div className="coluna">
-                    <button id="1" type="button" onClick={() => handleClick('1')} value={marcaJogador(value[1])}>
-                      {marcaJogador(value[1])}
-                    </button>
-                  </div>
-                  <div className="coluna">
-                    <button id="2" type="button" onClick={() => handleClick('2')} value={marcaJogador(value[2])}>
-                      {marcaJogador(value[2])}
-                    </button>
-                  </div>
-                  <div className="coluna">
-                    <button id="3" type="button" onClick={() => handleClick('3')} value={marcaJogador(value[3])}>
-                      {marcaJogador(value[3])}
-                    </button>
-                  </div>
-              </div>
-              <div className="linha">
-                  <div className="coluna">
-                    <button id="4" type="button" onClick={() => handleClick('4')} value={marcaJogador(value[4])}>
-                      {marcaJogador(value[4])}
-                    </button>
-                  </div>
-                  <div className="coluna">
-                    <button id="5" type="button" onClick={() => handleClick('5')} value={marcaJogador(value[5])}>
-                      {marcaJogador(value[5])}
-                    </button>
-                  </div>
-                  <div className="coluna">
-                    <button id="6" type="button" onClick={() => handleClick('6')} value={marcaJogador(value[6])}>
-                      {marcaJogador(value[6])}
-                    </button>
-                  </div>
-              </div>
-              <div className="linha">
-                  <div className="coluna">
-                    <button id="7" type="button" onClick={() => handleClick('7')} value={marcaJogador(value[7])}>
-                      {marcaJogador(value[7])}
-                    </button>
-                  </div>
-                  <div className="coluna">
-                    <button id="8" type="button" onClick={() => handleClick('8')} value={marcaJogador(value[8])}>
-                      {marcaJogador(value[8])}
-                    </button>
-                  </div>
-                  <div className="coluna">
-                    <button id="9" type="button" onClick={() => handleClick('9')} value={marcaJogador(value[9])}>
-                      {marcaJogador(value[9])}
-                    </button>
-                  </div>
-              </div>
+            {
+              colunas.map((b) => (
+                <button key={b} type="button" onClick={() => acaoClick(b)} value={defineJogador(valor[b])}>
+                      {defineJogador(valor[b])}
+                </button>
+              ))
+            }
           </div>
         </div>
         <div className="sidebar">
@@ -114,7 +101,7 @@ function App() {
             <p>Computador: 0</p>
 
             <div className="controles">
-                <button>Reiniciar partida</button>
+                <button onClick={() => reiniciarPartida()}>Reiniciar partida</button>
                 <button>Riniciar placar</button>
             </div>
           </div>
