@@ -38,7 +38,7 @@ function App() {
       [valor[0], valor[4], valor[8]],
       [valor[2], valor[4], valor[6]]
     ];
-    // tornar a comparação do resultado dinâmica (usar apenas um if ao invés de dois ifs)
+    // tornar dinâmica a comparação do resultado (usar apenas um if ao invés de dois if's).
     combinacoes.forEach(e => {
       if(e.every(e => e === -1)){
         alert('O Computador Ganhou')
@@ -93,7 +93,7 @@ function App() {
           <div className="turno">
               <h2>Turno</h2>
               <p>Jogando agora: {jogador === 1 ? 'Humano' : 'Bot'}</p>
-              <p>Vencedor: {vencedor === 1 ? 'Humano' : 'Bot'}</p>
+              <p>Vencedor: {vencedor === 1 ? 'Humano' : vencedor === -1 ? 'Bot' : ''}</p>
           </div>
           <div className="tabuleiro">
             {
