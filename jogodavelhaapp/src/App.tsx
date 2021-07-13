@@ -1,4 +1,3 @@
-import { stringify } from 'querystring';
 import React, { useEffect, useState } from 'react';
 import './App.css';
 
@@ -19,25 +18,39 @@ function App() {
   const reiniciarPartida = () => {
     setValor(bucasEstadoInicial());
     setJogador(1)
+    setVencedor(0)
   }
 
-  const colunas = [0, 1 , 2, 3, 4, 5, 6, 7, 8];
+  const colunas = [
+    0, 1 , 2,
+    3, 4, 5,
+    6, 7, 8
+  ];
 
   const encontraVencedor = () => {
     const combinacoes = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-
-      [0, 4, 8],
-      [2, 4, 6]
-    ]
+      [valor[0], valor[1], valor[2]],
+      [valor[3], valor[4], valor[5]],
+      [valor[6], valor[7], valor[8]],
+      [valor[0], valor[3], valor[6]],
+      [valor[1], valor[4], valor[7]],
+      [valor[2], valor[5], valor[8]],
+      [valor[0], valor[4], valor[8]],
+      [valor[2], valor[4], valor[6]]
+    ];
+    // tornar a comparação do resultado dinâmica (usar apenas um if ao invés de dois ifs)
+    combinacoes.forEach(e => {
+      if(e.every(e => e === -1)){
+        alert('O Computador Ganhou')
+        setVencedor(-1)
+      }
+      else if(e.every(e => e === 1)){
+        alert('Você Ganhou')
+        setVencedor(1)
+      }
+    })
   }
-
+  
   const acaoClick = (key: number) => {
     if(valor[key]){
       return;
@@ -46,9 +59,9 @@ function App() {
       ...valor,
       [key]: jogador
     }
+    
     setValor(valores);
-    setJogador(jogador * -1)
-    console.log(encontraVencedor());
+    setJogador(jogador * -1);
   }
 
   const defineJogador = (jogador: number) => {
@@ -65,7 +78,9 @@ function App() {
     return define;
   };
   
-
+  useEffect(() =>{
+    encontraVencedor()
+  },[valor]);
 
   return (
     <div className="App">
@@ -78,7 +93,7 @@ function App() {
           <div className="turno">
               <h2>Turno</h2>
               <p>Jogando agora: {jogador === 1 ? 'Humano' : 'Bot'}</p>
-              <p>Vencedor: </p>
+              <p>Vencedor: {vencedor === 1 ? 'Humano' : 'Bot'}</p>
           </div>
           <div className="tabuleiro">
             {
